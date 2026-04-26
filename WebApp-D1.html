@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal Konnect.</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --red:#d71c23;--red-dark:#a81419;--red-light:#f9e5e6;
+  --cream:#eae6de;--cream-dark:#d4cfc5;
+  --text-dark:#1a1612;--text-mid:#4a3f35;--text-muted:#7a6f65;
+  --white:#ffffff;--font:'Poppins',sans-serif;
+}
+body{font-family:var(--font);background:var(--cream);min-height:100vh;color:var(--text-dark);}
+
+/* NAV */
+.nav{background:var(--red);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:62px;position:relative;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo img{height:38px;border-radius:6px;}
+.nav-logo strong{color:var(--white);font-size:15px;font-weight:700;}
+.nav-tabs{display:flex;gap:2px;position:relative;}
+.nav-tab{padding:6px 12px;border-radius:6px;border:none;background:transparent;color:rgba(255,255,255,0.75);font-family:var(--font);font-size:12px;cursor:pointer;transition:all .15s;position:relative;}
+.nav-tab:hover,.nav-tab.active{background:rgba(255,255,255,0.18);color:var(--white);font-weight:600;}
+.dropdown{position:relative;}
+.dropdown-menu{display:none;position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border-radius:10px;border:0.5px solid var(--cream-dark);min-width:150px;overflow:hidden;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,0.12);}
+.dropdown:hover .dropdown-menu{display:block;}
+.dropdown-item{display:block;padding:9px 14px;font-size:12px;color:var(--text-dark);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--font);}
+.dropdown-item:hover{background:var(--red-light);color:var(--red);}
+.dropdown-arrow{font-size:9px;margin-left:3px;}
+
+/* SIGN UP MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:500;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--white);border-radius:16px;padding:2rem;width:320px;position:relative;}
+.modal h3{font-size:16px;font-weight:700;margin-bottom:0.25rem;}
+.modal p{font-size:12px;color:var(--text-muted);margin-bottom:1.25rem;}
+.modal label{font-size:12px;font-weight:500;display:block;margin-bottom:4px;color:var(--text-mid);}
+.modal input{width:100%;border:0.5px solid var(--cream-dark);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:13px;margin-bottom:0.85rem;outline:none;background:var(--cream);}
+.modal-submit{width:100%;background:var(--red);color:var(--white);border:none;border-radius:8px;padding:10px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;margin-top:0.25rem;}
+.modal-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:18px;cursor:pointer;color:var(--text-muted);}
+.modal-footer{text-align:center;font-size:11px;color:var(--text-muted);margin-top:0.85rem;}
+.modal-footer span{color:var(--red);cursor:pointer;font-weight:500;}
+.nav-cta{background:var(--white);color:var(--red);border:none;border-radius:6px;padding:7px 15px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;}
+
+/* SCREENS */
+.screen{display:none;padding:1.75rem 1.5rem;max-width:860px;margin:0 auto;}
+.screen.active{display:block;}
+
+/* HERO */
+.hero{
+  background-color:var(--red);
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(255,255,255,0.07) 0%, transparent 40%),
+    radial-gradient(circle at 80% 10%, rgba(0,0,0,0.12) 0%, transparent 50%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.2' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='0' cy='0' r='1.2' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='60' cy='0' r='1.2' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='0' cy='60' r='1.2' fill='rgba(255,255,255,0.08)'/%3E%3Ccircle cx='60' cy='60' r='1.2' fill='rgba(255,255,255,0.08)'/%3E%3C/svg%3E");
+  border-radius:16px;padding:2.5rem 2.5rem;margin-bottom:1.75rem;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;border:35px solid rgba(255,255,255,0.06);}
+.hero::after{content:'';position:absolute;right:90px;bottom:-60px;width:130px;height:130px;border-radius:50%;border:25px solid rgba(255,255,255,0.04);}
+.hero-logo{display:flex;align-items:center;gap:12px;margin-bottom:1.1rem;}
+.hero-logo img{height:50px;border-radius:8px;}
+.hero-logo strong{color:var(--white);font-size:21px;font-weight:700;}
+.hero p{color:rgba(255,255,255,0.85);font-size:13.5px;line-height:1.7;max-width:500px;margin-bottom:1.4rem;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{background:var(--white);color:var(--red);border:none;border-radius:8px;padding:10px 20px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;}
+.btn-outline{background:transparent;color:var(--white);border:1.5px solid rgba(255,255,255,0.5);border-radius:8px;padding:10px 20px;font-family:var(--font);font-size:13px;cursor:pointer;}
+
+/* STATS */
+.stats-row{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);padding:1.25rem;display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.stat{text-align:center;flex:1;min-width:90px;}
+.stat-num{font-size:24px;font-weight:700;color:var(--red);}
+.stat-label{font-size:11px;color:var(--text-muted);margin-top:2px;}
+
+/* FEATURE CARDS */
+.section-title{font-size:15px;font-weight:600;color:var(--text-dark);margin-bottom:1rem;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:1rem;margin-bottom:1.75rem;}
+.feat-card{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);padding:1.1rem;cursor:pointer;transition:transform .15s;}
+.feat-card:hover{transform:translateY(-2px);}
+.feat-icon{font-size:26px;margin-bottom:0.65rem;}
+.feat-card h3{font-size:12.5px;font-weight:600;margin-bottom:3px;}
+.feat-card p{font-size:11px;color:var(--text-muted);line-height:1.5;}
+
+/* SLIDER */
+.slider-wrap{position:relative;overflow:hidden;margin-bottom:1.5rem;}
+.slider-track{display:flex;transition:transform 0.35s ease;will-change:transform;}
+.slide{min-width:100%;padding:0 2px;}
+.slide-card{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);padding:1.1rem 1.25rem;}
+.slider-controls{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:10px;}
+.sl-btn{background:var(--red);color:var(--white);border:none;border-radius:50%;width:30px;height:30px;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.sl-dots{display:flex;gap:5px;}
+.sl-dot{width:6px;height:6px;border-radius:50%;background:var(--cream-dark);cursor:pointer;transition:background .2s;}
+.sl-dot.active{background:var(--red);}
+
+/* TOPIC ITEMS */
+.topic-item{display:flex;align-items:center;gap:0.9rem;cursor:pointer;padding:0.1rem 0;}
+.topic-item:hover .topic-info h4{color:var(--red);}
+.topic-emoji{font-size:20px;flex-shrink:0;}
+.topic-info h4{font-size:13px;font-weight:600;margin-bottom:2px;}
+.topic-info p{font-size:11px;color:var(--text-muted);}
+.topic-badge{margin-left:auto;background:var(--red-light);color:var(--red-dark);font-size:10px;font-weight:500;padding:3px 9px;border-radius:99px;white-space:nowrap;}
+.slide-card .slide-title{font-size:12px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:0.85rem;padding-bottom:0.6rem;border-bottom:0.5px solid var(--cream-dark);}
+.topic-divider{border:none;border-top:0.5px solid var(--cream-dark);margin:8px 0;}
+
+/* NEWS SLIDE */
+.news-slide-item{padding:8px 0;}
+.news-slide-item:not(:last-child){border-bottom:0.5px solid var(--cream-dark);}
+.news-meta{font-size:10px;color:var(--text-muted);margin-bottom:4px;display:flex;gap:7px;align-items:center;}
+.news-tag{background:var(--red-light);color:var(--red-dark);padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;}
+.news-slide-item h4{font-size:12.5px;font-weight:600;line-height:1.4;margin-bottom:3px;}
+.news-slide-item p{font-size:11px;color:var(--text-muted);line-height:1.5;}
+
+/* JOBS SLIDE */
+.job-slide-item{padding:8px 0;}
+.job-slide-item:not(:last-child){border-bottom:0.5px solid var(--cream-dark);}
+.job-slide-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:3px;}
+.job-slide-header h4{font-size:12.5px;font-weight:600;}
+.job-type{font-size:10px;background:var(--cream);color:var(--text-mid);padding:2px 7px;border-radius:99px;margin-left:6px;white-space:nowrap;}
+.job-org{font-size:11px;color:var(--text-muted);margin-bottom:5px;}
+.job-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.job-tag{font-size:10px;color:var(--red-dark);background:var(--red-light);padding:2px 7px;border-radius:99px;}
+.job-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:1rem;}
+.filter-pill{background:var(--white);border:0.5px solid var(--cream-dark);border-radius:99px;padding:4px 12px;font-size:11.5px;cursor:pointer;color:var(--text-mid);font-family:var(--font);}
+.filter-pill.active{background:var(--red);border-color:var(--red);color:var(--white);font-weight:600;}
+
+/* COUNSELING */
+.chat-wrap{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);overflow:hidden;margin-bottom:0.75rem;}
+.chat-header{background:var(--red);padding:0.9rem 1.1rem;display:flex;align-items:center;gap:10px;}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.chat-header-info h4{color:var(--white);font-size:13px;font-weight:600;}
+.chat-header-info p{color:rgba(255,255,255,0.7);font-size:10.5px;}
+.online-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;margin-left:auto;flex-shrink:0;}
+.chat-messages{padding:1rem;display:flex;flex-direction:column;gap:8px;min-height:200px;max-height:300px;overflow-y:auto;}
+.msg{max-width:78%;}
+.msg.bot{align-self:flex-start;}.msg.user{align-self:flex-end;}
+.msg-bubble{padding:8px 12px;border-radius:12px;font-size:12.5px;line-height:1.5;}
+.msg.bot .msg-bubble{background:var(--cream);color:var(--text-dark);border-radius:12px 12px 12px 4px;}
+.msg.user .msg-bubble{background:var(--red);color:var(--white);border-radius:12px 12px 4px 12px;}
+.msg-time{font-size:10px;color:var(--text-muted);margin-top:3px;padding:0 4px;}
+.msg.user .msg-time{text-align:right;}
+.chat-input-row{display:flex;gap:8px;padding:0.75rem 1rem;border-top:0.5px solid var(--cream-dark);align-items:center;}
+.chat-input{flex:1;border:0.5px solid var(--cream-dark);border-radius:8px;padding:8px 12px;font-family:var(--font);font-size:12.5px;background:var(--cream);outline:none;color:var(--text-dark);}
+.chat-send{background:var(--red);border:none;border-radius:8px;padding:8px 16px;color:var(--white);font-family:var(--font);font-size:12.5px;font-weight:600;cursor:pointer;}
+.disclaimer{font-size:10.5px;color:var(--text-muted);text-align:center;padding:0.4rem;line-height:1.55;}
+
+/* ABOUT */
+.about-section{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);padding:1.5rem;margin-bottom:1rem;}
+.about-section h3{font-size:14px;font-weight:600;margin-bottom:0.5rem;color:var(--red);}
+.about-section p{font-size:12.5px;color:var(--text-mid);line-height:1.7;}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;margin-top:1rem;}
+.team-card{background:var(--cream);border-radius:12px;padding:1rem;text-align:center;}
+.team-avatar{font-size:28px;margin-bottom:6px;}
+.team-card h4{font-size:12px;font-weight:600;}
+.team-card p{font-size:11px;color:var(--text-muted);}
+
+/* KONNECT */
+.konnect-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:1rem;}
+.konnect-card{background:var(--white);border-radius:14px;border:0.5px solid var(--cream-dark);padding:1.25rem;text-align:center;}
+.konnect-icon{font-size:32px;margin-bottom:8px;}
+.konnect-card h3{font-size:13px;font-weight:600;margin-bottom:4px;}
+.konnect-card p{font-size:11.5px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;}
+.konnect-btn{background:var(--red);color:var(--white);border:none;border-radius:8px;padding:8px 18px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;}
+
+/* FOOTER */
+footer{background:var(--text-dark);margin-top:2.5rem;padding:1.5rem;}
+.footer-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;}
+.footer-brand{display:flex;align-items:center;gap:10px;}
+.footer-brand img{height:32px;border-radius:5px;}
+.footer-brand strong{color:var(--white);font-size:13px;font-weight:700;display:block;}
+.footer-brand span{color:rgba(255,255,255,0.45);font-size:10px;}
+.footer-links{display:flex;gap:8px;align-items:center;}
+.footer-link{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:12px;background:rgba(255,255,255,0.07);border-radius:8px;padding:6px 12px;}
+.footer-link:hover{background:rgba(255,255,255,0.14);color:var(--white);}
+.footer-copy{width:100%;text-align:center;color:rgba(255,255,255,0.28);font-size:10px;border-top:0.5px solid rgba(255,255,255,0.08);padding-top:1rem;margin-top:0.5rem;}
+</style>
+</head>
+<body>
+
+<!-- SIGN UP MODAL -->
+<div class="modal-overlay" id="signup-modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3>Join Legal Konnect.</h3>
+    <p>Create your free account to get started.</p>
+    <label>Full Name</label>
+    <input type="text" placeholder="e.g. Budi Santoso">
+    <label>Email Address</label>
+    <input type="email" placeholder="you@email.com">
+    <label>Password</label>
+    <input type="password" placeholder="••••••••">
+    <button class="modal-submit" onclick="closeModal()">Create Account</button>
+    <div class="modal-footer">Already have an account? <span onclick="closeModal()">Sign in</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">
+    <!-- Replace the src below with your actual logo path or base64 -->
+    <img src="Logo-Legal_Konnect.png" alt="Legal Konnect Logo">
+    <strong>Legal Konnect.</strong>
+  </div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="goTo('home',this)">Main Page</button>
+    <div class="dropdown">
+      <button class="nav-tab" onclick="goTo('education',this)">Information <span class="dropdown-arrow">▾</span></button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" onclick="goTo('education', document.querySelectorAll('.nav-tab')[1])">📚 Education</button>
+        <button class="dropdown-item" onclick="goTo('news', document.querySelectorAll('.nav-tab')[1])">📰 News</button>
+        <button class="dropdown-item" onclick="goTo('jobs', document.querySelectorAll('.nav-tab')[1])">💼 Jobs</button>
+      </div>
+    </div>
+    <button class="nav-tab" onclick="goTo('counseling',this)">Live Counsel</button>
+    <button class="nav-tab" onclick="goTo('about',this)">About</button>
+    <button class="nav-tab" onclick="goTo('konnect',this)">Konnect with Us</button>
+  </div>
+  <button class="nav-cta" onclick="openModal()">Sign Up</button>
+</nav>
+
+<!-- HOME -->
+<div class="screen active" id="screen-home">
+  <div class="hero">
+    <div class="hero-logo">
+      <img src="Logo-Legal_Konnect.png" alt="Legal Konnect">
+      <strong>Legal Konnect.</strong>
+    </div>
+    <p>Your one-stop platform for legal education, breaking legal news, career opportunities, and free counseling — built for citizens and legal professionals alike.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="goTo('counseling', document.querySelectorAll('.nav-tab')[2])">💬 Free Counseling</button>
+      <button class="btn-outline" onclick="goTo('education', document.querySelectorAll('.nav-tab')[1])">📚 Explore Education</button>
+    </div>
+  </div>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">12,400+</div><div class="stat-label">Citizens helped</div></div>
+    <div class="stat"><div class="stat-num">340+</div><div class="stat-label">Legal articles</div></div>
+    <div class="stat"><div class="stat-num">860+</div><div class="stat-label">Job listings</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Free counseling</div></div>
+  </div>
+  <p class="section-title">What Legal Konnect offers</p>
+  <div class="cards-grid">
+    <div class="feat-card" onclick="goTo('education', document.querySelectorAll('.nav-tab')[1])">
+      <div class="feat-icon">📚</div><h3>Legal Education</h3><p>Structured courses and plain-language guides on your rights.</p>
+    </div>
+    <div class="feat-card" onclick="goTo('news', document.querySelectorAll('.nav-tab')[1])">
+      <div class="feat-icon">📰</div><h3>Legal News</h3><p>Stay current with court decisions and legislation.</p>
+    </div>
+    <div class="feat-card" onclick="goTo('jobs', document.querySelectorAll('.nav-tab')[1])">
+      <div class="feat-icon">💼</div><h3>Job Postings</h3><p>Legal roles for graduates, paralegals, lawyers, and more.</p>
+    </div>
+    <div class="feat-card" onclick="goTo('counseling', document.querySelectorAll('.nav-tab')[2])">
+      <div class="feat-icon">🤝</div><h3>Free Counseling</h3><p>Get guidance from trained legal advisors — anytime.</p>
+    </div>
+    <div class="feat-card" onclick="goTo('about', document.querySelectorAll('.nav-tab')[3])">
+      <div class="feat-icon">ℹ️</div><h3>About Us</h3><p>Our mission: justice and access for everyone.</p>
+    </div>
+    <div class="feat-card" onclick="goTo('konnect', document.querySelectorAll('.nav-tab')[4])">
+      <div class="feat-icon">🔗</div><h3>Konnect with Us</h3><p>Reach us on social media or send us a message.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="screen" id="screen-education">
+  <p class="section-title">📚 Legal Education</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">6</div><div class="stat-label">Topics available</div></div>
+    <div class="stat"><div class="stat-num">3</div><div class="stat-label">Skill levels</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">Always</div></div>
+  </div>
+  <div class="slider-wrap" id="edu-slider">
+    <div class="slider-track" id="edu-track">
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Beginner topics</div>
+          <div class="topic-item">
+            <div class="topic-emoji">🏛️</div>
+            <div class="topic-info"><h4>Constitutional Rights</h4><p>Know your fundamental rights as a citizen</p></div>
+            <div class="topic-badge">Beginner</div>
+          </div>
+          <hr class="topic-divider">
+          <div class="topic-item">
+            <div class="topic-emoji">⚖️</div>
+            <div class="topic-info"><h4>Criminal Law Basics</h4><p>Understand arrest, charges, and court processes</p></div>
+            <div class="topic-badge">Beginner</div>
+          </div>
+          <hr class="topic-divider">
+          <div class="topic-item">
+            <div class="topic-emoji">👨‍👩‍👧</div>
+            <div class="topic-info"><h4>Family Law</h4><p>Marriage, divorce, child custody, and estates</p></div>
+            <div class="topic-badge">Beginner</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Intermediate topics</div>
+          <div class="topic-item">
+            <div class="topic-emoji">🏠</div>
+            <div class="topic-info"><h4>Property & Land Rights</h4><p>Ownership, disputes, and inheritance law</p></div>
+            <div class="topic-badge">Intermediate</div>
+          </div>
+          <hr class="topic-divider">
+          <div class="topic-item">
+            <div class="topic-emoji">👷</div>
+            <div class="topic-info"><h4>Labor & Employment Law</h4><p>Workers' rights, contracts, and disputes</p></div>
+            <div class="topic-badge">Intermediate</div>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Advanced topics</div>
+          <div class="topic-item">
+            <div class="topic-emoji">📋</div>
+            <div class="topic-info"><h4>Civil Litigation</h4><p>How to pursue or defend a civil lawsuit</p></div>
+            <div class="topic-badge">Advanced</div>
+          </div>
+          <hr class="topic-divider">
+          <div class="topic-item">
+            <div class="topic-emoji">🏢</div>
+            <div class="topic-info"><h4>Administrative Law</h4><p>Challenging government decisions and regulations</p></div>
+            <div class="topic-badge">Advanced</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="sl-btn" onclick="slide('edu',-1)">&#8249;</button>
+      <div class="sl-dots" id="edu-dots"></div>
+      <button class="sl-btn" onclick="slide('edu',1)">&#8250;</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEWS -->
+<div class="screen" id="screen-news">
+  <p class="section-title">📰 Legal News</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">340+</div><div class="stat-label">Articles published</div></div>
+    <div class="stat"><div class="stat-num">Daily</div><div class="stat-label">Updates</div></div>
+    <div class="stat"><div class="stat-num">4</div><div class="stat-label">Categories</div></div>
+  </div>
+  <div class="slider-wrap" id="news-slider">
+    <div class="slider-track" id="news-track">
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Latest — Apr 24–25, 2026</div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">🏛️ Supreme Court</span><span>Apr 24, 2026</span></div>
+            <h4>Supreme Court Rules on Digital Privacy in Landmark Case</h4>
+            <p>The court unanimously affirmed that citizens retain the right to digital privacy, setting limits on warrantless data access.</p>
+          </div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">📜 Legislation</span><span>Apr 25, 2026</span></div>
+            <h4>Anti-SLAPP Bill Advances in House Committee</h4>
+            <p>A bill protecting journalists and activists from frivolous lawsuits cleared its first committee vote with broad support.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">This week — Apr 20–23, 2026</div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">📜 Legislation</span><span>Apr 22, 2026</span></div>
+            <h4>New Labor Reform Bill Passes Second Reading in Parliament</h4>
+            <p>The bill expands protections for gig economy workers, including minimum wage floors and social security entitlements.</p>
+          </div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">🤲 Human Rights</span><span>Apr 20, 2026</span></div>
+            <h4>Legal Aid Commission Expands Free Services to Rural Areas</h4>
+            <p>Over 200 new legal aid officers will be deployed to underserved regions to close the justice access gap.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Earlier — Apr 15–18, 2026</div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">🏢 Corporate Law</span><span>Apr 18, 2026</span></div>
+            <h4>Regulator Cracks Down on Predatory Lending Practices</h4>
+            <p>New binding guidelines curb interest rates on informal micro-loans following a string of public complaints.</p>
+          </div>
+          <div class="news-slide-item">
+            <div class="news-meta"><span class="news-tag">⚖️ Criminal</span><span>Apr 15, 2026</span></div>
+            <h4>Sentencing Reform Proposal Gains Traction in Parliament</h4>
+            <p>Lawmakers are debating minimum sentencing reductions for non-violent offenses, citing overcrowded prisons.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="sl-btn" onclick="slide('news',-1)">&#8249;</button>
+      <div class="sl-dots" id="news-dots"></div>
+      <button class="sl-btn" onclick="slide('news',1)">&#8250;</button>
+    </div>
+  </div>
+</div>
+
+<!-- JOBS -->
+<div class="screen" id="screen-jobs">
+  <p class="section-title">💼 Legal Job Postings</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-num">860+</div><div class="stat-label">Active listings</div></div>
+    <div class="stat"><div class="stat-num">Free</div><div class="stat-label">To post & apply</div></div>
+    <div class="stat"><div class="stat-num">5</div><div class="stat-label">Job types</div></div>
+  </div>
+  <div class="job-filters">
+    <button class="filter-pill active">All</button>
+    <button class="filter-pill">Entry Level</button>
+    <button class="filter-pill">Mid-Level</button>
+    <button class="filter-pill">Senior</button>
+    <button class="filter-pill">Remote</button>
+    <button class="filter-pill">NGO / Public</button>
+  </div>
+  <div class="slider-wrap" id="jobs-slider">
+    <div class="slider-track" id="jobs-track">
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Private sector</div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>👨‍⚖️ Junior Legal Associate</h4><span class="job-type">Full-time</span></div>
+            <div class="job-org">📍 Santoso & Partners Law Firm · Surabaya</div>
+            <div class="job-tags"><span class="job-tag">Entry Level</span><span class="job-tag">Civil Law</span><span class="job-tag">S1 Required</span></div>
+          </div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>🏢 Corporate Counsel</h4><span class="job-type">Full-time</span></div>
+            <div class="job-org">📍 PT Nusantara Energi Tbk · Jakarta</div>
+            <div class="job-tags"><span class="job-tag">Mid-Level</span><span class="job-tag">Corporate</span><span class="job-tag">5+ yrs</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Public & NGO</div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>🛡️ Public Defender — Criminal</h4><span class="job-type">Government</span></div>
+            <div class="job-org">📍 Kementerian Hukum dan HAM · Malang</div>
+            <div class="job-tags"><span class="job-tag">Public Sector</span><span class="job-tag">Criminal</span><span class="job-tag">CPNS</span></div>
+          </div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>🤝 Legal Aid Coordinator</h4><span class="job-type">Contract</span></div>
+            <div class="job-org">📍 Yayasan Bantuan Hukum Merdeka · Remote</div>
+            <div class="job-tags"><span class="job-tag">NGO</span><span class="job-tag">Remote</span><span class="job-tag">Human Rights</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="slide">
+        <div class="slide-card">
+          <div class="slide-title">Internships & research</div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>🔍 Legal Research Intern</h4><span class="job-type">Internship</span></div>
+            <div class="job-org">📍 Komnas HAM · Jakarta</div>
+            <div class="job-tags"><span class="job-tag">Internship</span><span class="job-tag">Research</span><span class="job-tag">Human Rights</span></div>
+          </div>
+          <div class="job-slide-item">
+            <div class="job-slide-header"><h4>📋 Policy Research Analyst</h4><span class="job-type">Full-time</span></div>
+            <div class="job-org">📍 PSHK Indonesia · Jakarta</div>
+            <div class="job-tags"><span class="job-tag">Entry Level</span><span class="job-tag">Policy</span><span class="job-tag">Research</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-controls">
+      <button class="sl-btn" onclick="slide('jobs',-1)">&#8249;</button>
+      <div class="sl-dots" id="jobs-dots"></div>
+      <button class="sl-btn" onclick="slide('jobs',1)">&#8250;</button>
+    </div>
+  </div>
+</div>
+
+<!-- COUNSELING -->
+<div class="screen" id="screen-counseling">
+  <p class="section-title">🤝 Free Legal Counseling</p>
+  <div class="chat-wrap">
+    <div class="chat-header">
+      <div class="chat-avatar">⚖️</div>
+      <div class="chat-header-info">
+        <h4>Legal Konnect Advisor</h4>
+        <p>Trained legal counselor · Confidential</p>
+      </div>
+      <div class="online-dot"></div>
+    </div>
+    <div class="chat-messages" id="chat-msgs">
+      <div class="msg bot">
+        <div class="msg-bubble">Hello! 👋 I'm your free legal counselor from Legal Konnect. Ask me anything — tenancy issues, labor disputes, family law, criminal procedure, or your rights as a citizen. Everything here is confidential.</div>
+        <div class="msg-time">Just now</div>
+      </div>
+    </div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chat-in" type="text" placeholder="Type your legal question..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">Send ➤</button>
+    </div>
+  </div>
+  <div class="disclaimer">⚠️ This service provides general legal information, not formal legal advice. For court matters, please consult a licensed attorney.</div>
+</div>
+
+<!-- ABOUT -->
+<div class="screen" id="screen-about">
+  <p class="section-title">ℹ️ About Legal Konnect</p>
+  <div class="about-section">
+    <h3>Our Mission</h3>
+    <p>Legal Konnect was built on a simple belief: everyone deserves access to legal knowledge, regardless of background or income. We bridge the gap between the legal system and the everyday citizen — through education, news, job opportunities, and free counseling.</p>
+  </div>
+  <div class="about-section">
+    <h3>Our Vision</h3>
+    <p>A society that is legally literate, empowered, and connected — where justice is not a privilege but a right for all. We envision Legal Konnect as the go-to digital platform for legal access in Indonesia and beyond.</p>
+  </div>
+  <div class="about-section">
+    <h3>Meet the Team</h3>
+    <div class="team-grid">
+      <div class="team-card"><div class="team-avatar">👩‍⚖️</div><h4>Sari Dewi, S.H.</h4><p>Founder & Legal Director</p></div>
+      <div class="team-card"><div class="team-avatar">👨‍💻</div><h4>Rizky Pratama</h4><p>Head of Technology</p></div>
+      <div class="team-card"><div class="team-avatar">👩‍🏫</div><h4>Maya Putri</h4><p>Head of Education</p></div>
+      <div class="team-card"><div class="team-avatar">👨‍📰</div><h4>Dian Kusuma</h4><p>News & Media Lead</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- KONNECT WITH US -->
+<div class="screen" id="screen-konnect">
+  <p class="section-title">🔗 Konnect with Us</p>
+  <div class="konnect-grid">
+    <div class="konnect-card">
+      <div class="konnect-icon">📸</div>
+      <h3>Instagram</h3>
+      <p>Follow us for daily legal tips, news highlights, and community updates.</p>
+      <a class="konnect-btn" href="https://instagram.com" target="_blank">Follow Us</a>
+    </div>
+    <div class="konnect-card">
+      <div class="konnect-icon">🐦</div>
+      <h3>X (Twitter)</h3>
+      <p>Get real-time legal news and join the conversation with our community.</p>
+      <a class="konnect-btn" href="https://x.com" target="_blank">Follow Us</a>
+    </div>
+    <div class="konnect-card">
+      <div class="konnect-icon">✉️</div>
+      <h3>Email Us</h3>
+      <p>Have a question, partnership idea, or feedback? Reach out directly.</p>
+      <a class="konnect-btn" href="mailto:hello@legalkonnect.id">Send Email</a>
+    </div>
+  </div>
+  <div class="about-section">
+    <h3>📍 Office</h3>
+    <p>Jl. Hukum Merdeka No. 12, Malang, East Java, Indonesia 65141<br>Phone: +62 341 000-0000 · Mon–Fri, 09.00–17.00 WIB</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="Logo-Legal_Konnect.png" alt="Legal Konnect">
+      <div><strong>Legal Konnect.</strong><span>Legally Konnected</span></div>
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="https://instagram.com" target="_blank">📸 Instagram</a>
+      <a class="footer-link" href="https://x.com" target="_blank">🐦 X</a>
+      <a class="footer-link" href="mailto:hello@legalkonnect.id">✉️ Gmail</a>
+    </div>
+    <div class="footer-copy">© 2026 Legal Konnect. All rights reserved. · Legally Konnected</div>
+  </div>
+</footer>
+
+<script>
+const sliders = {
+  edu: { current: 0, total: 3 },
+  news: { current: 0, total: 3 },
+  jobs: { current: 0, total: 3 }
+};
+
+function initDots(id) {
+  const s = sliders[id];
+  const dotsEl = document.getElementById(id + '-dots');
+  dotsEl.innerHTML = '';
+  for (let i = 0; i < s.total; i++) {
+    const d = document.createElement('div');
+    d.className = 'sl-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goSlide(id, i);
+    dotsEl.appendChild(d);
+  }
+}
+
+function goSlide(id, idx) {
+  const s = sliders[id];
+  s.current = (idx + s.total) % s.total;
+  document.getElementById(id + '-track').style.transform = 'translateX(-' + (s.current * 100) + '%)';
+  document.querySelectorAll('#' + id + '-dots .sl-dot').forEach(function(d, i) {
+    d.classList.toggle('active', i === s.current);
+  });
+}
+
+function slide(id, dir) {
+  goSlide(id, sliders[id].current + dir);
+}
+
+initDots('edu');
+initDots('news');
+initDots('jobs');
+
+function goTo(screen, tab) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.getElementById('screen-' + screen).classList.add('active');
+  if (tab) tab.classList.add('active');
+}
+
+function openModal() {
+  document.getElementById('signup-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('signup-modal').classList.remove('open');
+}
+
+function sendChat() {
+  var input = document.getElementById('chat-in');
+  var msgs = document.getElementById('chat-msgs');
+  var text = input.value.trim();
+  if (!text) return;
+  var userMsg = document.createElement('div');
+  userMsg.className = 'msg user';
+  userMsg.innerHTML = '<div class="msg-bubble">' + text + '</div><div class="msg-time">Just now</div>';
+  msgs.appendChild(userMsg);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(function() {
+    var botMsg = document.createElement('div');
+    botMsg.className = 'msg bot';
+    botMsg.innerHTML = '<div class="msg-bubble">Thank you for reaching out 🙏 A Legal Konnect counselor will review your query and respond shortly. For urgent matters, please reach us via our social channels or email.</div><div class="msg-time">Just now</div>';
+    msgs.appendChild(botMsg);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 900);
+}
+
+document.querySelectorAll('.filter-pill').forEach(function(pill) {
+  pill.addEventListener('click', function() {
+    document.querySelectorAll('.filter-pill').forEach(function(p) { p.classList.remove('active'); });
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
